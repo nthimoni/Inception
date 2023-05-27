@@ -1,9 +1,10 @@
-FROM	debian:buster
+FROM		debian:buster
 
-RUN	apt-get update && apt-get install mariadb-server -y
+RUN		apt-get update && apt-get install mariadb-server -y
 
-COPY	conf/50-server.cnf	/etc/mysql/mariadb.conf.d/50-server.cnf
-COPY	conf/init_mariadb.sh	/etc/mysql/init_mariadb.sh
+COPY		conf/init_db.sh	/usr/local/bin/init_db.sh
 
-RUN	chmod 777 /etc/mysql/init_mariadb.sh
-CMD	["/etc/mysql/init_mariadb.sh"]
+RUN		chmod +x /usr/local/bin/init_db.sh
+
+ENTRYPOINT	["/usr/local/bin/init_db.sh"]
+CMD		["mysqld_safe", "--bind-address=0.0.0.0"]

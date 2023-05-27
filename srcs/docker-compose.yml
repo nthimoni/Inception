@@ -1,1 +1,53 @@
-version: "3"
+version: "3.9"
+name: inception
+services:
+  nginx:
+    build: requirements/nginx
+    ports:
+      - 443:443
+    networks:
+      - network
+    volumes:
+      - wp:/var/www/wordpress
+    env_file: .env
+    restart: always
+    container_name: nginx
+
+  mariadb:
+    build: requirements/mariadb
+    expose:
+      - 3306
+    env_file: .env
+    restart: always
+    networks:
+      - network
+    volumes:
+      - mysql:/var/lib/mysql
+    container_name: mariadb
+
+  wordpress:
+    build: requirements/wordpress
+    expose:
+      - 9000
+    env_file: .env
+    restart: always
+    networks:
+      - network
+    volumes:
+      - wp:/var/www/wordpress
+    container_name: wordpress
+volumes:
+  mysql:
+    driver_opts:
+      type: none
+      device: "/home/nthimoni/data/mysql"
+      o: bind
+  wp:
+    driver_opts:
+      type: none
+      device: "/home/nthimoni/data/wp"
+      o: bind
+
+networks:
+  network:
+    driver: bridge

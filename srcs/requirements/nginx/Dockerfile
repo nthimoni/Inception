@@ -6,9 +6,6 @@ RUN	apt-get update && apt-get -y upgrade
 RUN	apt-get -y install nginx && apt-get -y install openssl
 RUN	mkdir -p /etc/nginx/ssl
 
-
-
-
 RUN openssl req \
 	 -newkey rsa:2048 \
 	 -x509 \
@@ -19,6 +16,8 @@ RUN openssl req \
 
 EXPOSE 443
 
-COPY	nthimoni.conf /etc/nginx/conf.d/nthimoni.conf
+RUN rm /etc/nginx/sites-enabled/default
+
+COPY	conf/nthimoni.conf /etc/nginx/sites-enabled/nthimoni.42.fr.conf
 
 CMD	["nginx", "-g", "daemon off;"]
