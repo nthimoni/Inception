@@ -1,4 +1,6 @@
-all:
+all: up
+
+up:
 	mkdir -p /home/nthimoni/data/wordpress
 	mkdir -p /home/nthimoni/data/mysql
 	docker compose -f srcs/docker-compose.yml build
